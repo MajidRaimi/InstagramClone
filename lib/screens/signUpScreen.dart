@@ -78,7 +78,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
 
     if (result != 'Added User Successfully') {
-      showAlertDialog(result, context);
+      showAlertDialog(result, context , true);
     } else {
       Navigator.pushReplacement(
         context,

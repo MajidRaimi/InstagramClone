@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (result == "Logged In User Successfully") {
       print("Logged In Successfully"); 
     } else {
-      showAlertDialog(result, context);
+      showAlertDialog(result, context , true);
     }
   }
 
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     await loginUser();
                   },
                   child: _isLoading
-                      ? CircularProgressIndicator()
+                      ? const CircularProgressIndicator()
                       : Container(
                           child: const Padding(
                             padding: EdgeInsets.symmetric(

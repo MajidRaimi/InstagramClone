@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import "package:instaclone/model/user.dart" as model;
 import '../providers/userProvider.dart';
 import '../util/colors.dart';
+import '../util/globalVaribales.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -34,9 +35,9 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     pageController.dispose();
   }
 
-  void onPageChanged(int page){
+  void onPageChanged(int page) {
     setState(() {
-      _page = page ; 
+      _page = page;
     });
   }
 
@@ -44,14 +45,8 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        // physics: NeverScrollableScrollPhysics(), // ! No Horizontal Scrolling 
-        children: [
-          Center(child: Text("Home")),
-          Center(child: Text("Search")),
-          Center(child: Text("Add")),
-          Center(child: Text("Favorite")),
-          Center(child: Text("Settings")),
-        ],
+        // physics: NeverScrollableScrollPhysics(), // ! No Horizontal Scrolling
+        children: homeScreenItems,
         controller: pageController,
         onPageChanged: onPageChanged,
       ),

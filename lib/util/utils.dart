@@ -14,13 +14,13 @@ pickImage(ImageSource source) async {
   print("No Image Selected");
 }
 
-showAlertDialog(String error, BuildContext context , bool isError) {
+showAlertDialog(String message, BuildContext context , bool isError) {
   return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: isError ? const Text("Some Error Occurred") : const Text("Done") ,  
-          content: Text(error),
+          content: Text(message),
           actions: [
             IconButton(
               onPressed: () {

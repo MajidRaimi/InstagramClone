@@ -105,7 +105,7 @@ class _PostCardState extends State<PostCard> {
             GestureDetector(
               onDoubleTap: () async {
                 await FirestoreMethods().likePost(
-                    widget.snap["Post Id"], user!.userID, widget.snap["Likes"]);
+                    widget.snap["Post Id"], user.userID, widget.snap["Likes"]);
                 setState(() {
                   isLikeAnimating = true;
                 });
@@ -149,15 +149,15 @@ class _PostCardState extends State<PostCard> {
               child: Row(
                 children: [
                   LikeAnimation(
-                    isAnimating: widget.snap['Likes'].contains(user!.userID),
+                    isAnimating: widget.snap['Likes'].contains(user.userID),
                     child: IconButton(
                       onPressed: () async {
                         await FirestoreMethods().likePost(
                             widget.snap["Post Id"],
-                            user!.userID,
+                            user.userID,
                             widget.snap["Likes"]);
                       },
-                      icon: widget.snap['Likes'].contains(user!.userID)
+                      icon: widget.snap['Likes'].contains(user.userID)
                           ? const Icon(
                               Icons.favorite,
                               color: Colors.red,
@@ -175,16 +175,25 @@ class _PostCardState extends State<PostCard> {
                         ),
                       );
                     },
-                    icon: const Icon(Icons.comment_outlined, size: 24),
+                    icon: const Icon(
+                      Icons.comment_outlined,
+                      size: 24,
+                    ),
                   ),
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.send, size: 24),
+                    icon: const Icon(
+                      Icons.send,
+                      size: 24,
+                    ),
                   ),
                   const Spacer(),
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.bookmark_outline, size: 24),
+                    icon: const Icon(
+                      Icons.bookmark_outline,
+                      size: 24,
+                    ),
                   ),
                 ],
               ),
@@ -230,7 +239,7 @@ class _PostCardState extends State<PostCard> {
                     child: GestureDetector(
                       onTap: () {},
                       child: Text(
-                        "View All ${commentLength} Comments",
+                        "View All $commentLength Comments",
                         style: const TextStyle(
                             fontWeight: FontWeight.w400, color: secondaryColor),
                       ),

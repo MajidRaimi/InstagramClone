@@ -83,17 +83,17 @@ class _AddPostScreenState extends State<AddPostScreen> {
         _isLoading = false;
       });
       if (result == "Success") {
-        showAlertDialog("Post Uploaded Successfully", context , false);
-        clearImage() ; 
+        showAlertDialog("Post Uploaded Successfully", context, false);
+        clearImage();
       } else {
-        showAlertDialog("Post Could Not Upload", context , true);
+        showAlertDialog("Post Could Not Upload", context, true);
       }
     } catch (e) {}
   }
 
   void clearImage() {
     setState(() {
-      _file = null ; 
+      _file = null;
     });
   }
 
@@ -122,7 +122,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   elevation: 0,
                   leading: IconButton(
                     onPressed: () {
-                      clearImage() ; 
+                      clearImage();
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),

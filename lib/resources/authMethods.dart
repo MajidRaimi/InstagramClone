@@ -107,4 +107,10 @@ class AuthMethods {
     print("The Result Is : " + result);
     return result;
   }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+  }
+
+
 }

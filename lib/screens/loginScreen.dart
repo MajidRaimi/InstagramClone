@@ -39,9 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     if (result == "Logged In User Successfully") {
-      print("Logged In Successfully"); 
+      print("Logged In Successfully");
     } else {
-      showAlertDialog(result, context , true);
+      showAlertDialog(result, context, true);
     }
   }
 
@@ -110,10 +110,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Text("Don't Have An Account ? "),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const SignUpScreen();
-                        }));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const SignUpScreen();
+                            },
+                          ),
+                        );
                       },
                       child: const Text(
                         "Sign Up",

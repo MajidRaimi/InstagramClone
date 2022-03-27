@@ -38,4 +38,61 @@ class FirestoreMethods {
     }
     return result;
   }
+
+  // ! Will Add To User Id To List Of Likes
+  Future<void> likePost(String postId, String userId, List likes) async {
+    try {
+      // ! If You Already Liked Remove Your Like
+      if (likes.contains(userId)) {
+        await _firestore.collection("posts").doc(postId).update({
+          "Likes": FieldValue.arrayRemove([userId])
+        });
+        // ! If Its Your First Time Liking Add User Id To Like List Of The Post
+      } else {
+        await _firestore.collection("posts").doc(postId).update({
+          "Likes": FieldValue.arrayUnion([userId])
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<String> postComment(String postId, String text, String userId,
+      String profilePic, String username) async {
+    String result = "Error";
+
+    try {
+      if (text.isNotEmpty) {
+        String commentId = const Uuid().v1().toString();
+        // ! Adding A New Collection Inside A Collection
+        await _firestore
+            .collection("posts")
+            .doc(postId)
+            .collection("comments")
+            .doc(commentId)
+            .set({
+          "profilePic": profilePic,
+          "username": username,
+          "userId": userId,
+          "text": text,
+          "commentId": commentId,
+          "datePublished": DateTime.now()
+        });
+      }
+
+      result = "Worked";
+    } catch (e) {
+      result = e.toString();
+    }
+
+    return result;
+  }
+
+  // ! Delete Post
+  Future<void> deletePost(String postId) async {
+    try {
+      await _firestore.collection("posts").doc(postId).delete() ; 
+    } catch (e) {}
+  }
 }

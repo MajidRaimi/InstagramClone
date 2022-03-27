@@ -36,7 +36,7 @@ class FeedScreen extends StatelessWidget {
             );
           }
 
-          if (snapshot.data!.docs.length == 0) {
+          if (snapshot.data!.docs.isEmpty) {
             return const Center(
               child: Text(
                 "Not Posts Found",

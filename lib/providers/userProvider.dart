@@ -4,7 +4,7 @@ import "package:instaclone/model/user.dart";
 import '../resources/authMethods.dart';
 
 class UserProvider extends ChangeNotifier {
-  User? _user;
+  User ? _user;
   final AuthMethods _authMethods = AuthMethods();
 
   User get getUser => _user!;

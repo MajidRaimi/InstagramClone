@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 
 import '../model/user.dart';
 import '../providers/userProvider.dart';
+import '../resources/firestoreMethods.dart';
+import '../screens/commentsScreen.dart';
 import '../util/colors.dart';
 import 'likeAmimation.dart';
 
@@ -18,10 +20,31 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+  int commentLength = 0;
+  @override
+  void initState() {
+    super.initState();
+    // getComments();
+  }
+
+  // void getComments() async {
+  //   QuerySnapshot snap = await FirebaseFirestore.instance
+  //       .collection("pots")
+  //       .doc(widget.snap["Post Id"])
+  //       .collection("comments")
+  //       .get();
+
+  //   setState(() {
+  //     commentLength = snap.docs.length;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<UserProvider>(context).getUser;
+    final User? user = Provider.of<UserProvider>(context).getUser;
+    if (user == null) {
+      return const CircularProgressIndicator();
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Container(
@@ -30,7 +53,7 @@ class _PostCardState extends State<PostCard> {
           children: [
             // ! Header Section
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
               child: Row(
                 children: [
                   CircleAvatar(
@@ -57,9 +80,16 @@ class _PostCardState extends State<PostCard> {
                                 child: ListView(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 16),
-                                  children: const [
+                                  children: [
                                     Center(
-                                      child: Text("Delete Post"),
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          Navigator.of(context).pop();
+                                          await FirestoreMethods().deletePost(
+                                              widget.snap["Post Id"]);
+                                        },
+                                        child: const Text("Delete Post"),
+                                      ),
                                     ),
                                   ],
                                   shrinkWrap: true,
@@ -73,9 +103,16 @@ class _PostCardState extends State<PostCard> {
             ),
             // ! Image Section
             GestureDetector(
-              onTap: ()  {
-                setState(()  {
+              onDoubleTap: () async {
+                await FirestoreMethods().likePost(
+                    widget.snap["Post Id"], user!.userID, widget.snap["Likes"]);
+                setState(() {
                   isLikeAnimating = true;
+                });
+              },
+              onTap: () {
+                setState(() {
+                  isLikeAnimating = false;
                 });
               },
               child: Stack(
@@ -112,24 +149,42 @@ class _PostCardState extends State<PostCard> {
               child: Row(
                 children: [
                   LikeAnimation(
-                    isAnimating: widget.snap['Likes'].contains(user.userID),
+                    isAnimating: widget.snap['Likes'].contains(user!.userID),
                     child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.favorite_outline, size: 24),
+                      onPressed: () async {
+                        await FirestoreMethods().likePost(
+                            widget.snap["Post Id"],
+                            user!.userID,
+                            widget.snap["Likes"]);
+                      },
+                      icon: widget.snap['Likes'].contains(user!.userID)
+                          ? const Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            )
+                          : const Icon(Icons.favorite_border_outlined),
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => CommentsScreen(
+                            snap: widget.snap,
+                          ),
+                        ),
+                      );
+                    },
                     icon: const Icon(Icons.comment_outlined, size: 24),
                   ),
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.send, size: 24),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.bookmark_outline, size: 24),
+                    icon: const Icon(Icons.bookmark_outline, size: 24),
                   ),
                 ],
               ),
@@ -175,7 +230,7 @@ class _PostCardState extends State<PostCard> {
                     child: GestureDetector(
                       onTap: () {},
                       child: Text(
-                        "View All 200 Comments",
+                        "View All ${commentLength} Comments",
                         style: const TextStyle(
                             fontWeight: FontWeight.w400, color: secondaryColor),
                       ),
